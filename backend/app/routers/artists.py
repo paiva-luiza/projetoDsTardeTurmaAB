@@ -1,46 +1,113 @@
 """
-
-Este módulo define rotas para operações CRUD de artistas usando FastAPI.
-
-Variáveis:
-- fake_db: Lista simulando um banco de dados de usuários, cada artista é um dicionário com 'id' e 'name'.
-
-Nota: Este código utiliza um banco de dados em memória apenas para fins de demonstração.
-
+Este módulo define as rotas da API para operações relacionadas a artistas.
+Ele permite buscar, criar, atualizar e deletar perfis de artistas.
 """
-
-from fastapi import APIRouter
-from app.models import Artist
-from app.db.fake_db import fake_db
+from fastapi import APIRouter, HTTPException
+from app.db.supabase_client import get_supabase
 
 router = APIRouter()
+supabase = get_supabase()
+
 
 @router.get("/")
-def get_users():
-    return fake_db.artist
+def get_artists():
+    """
+    Retorna uma lista de todos os artistas.
+    """
+    response = supabase.table("users").select("*").eq("type", "artist").execute()
+    return response.data
+
 
 @router.get("/{artist_id}")
-def get_artist(artist_id: int):
-    artist = next((artist for artist in fake_db if artist["id"] == artist_id), None)
-    if artist:
-        return artist
+def get_artist_by_id(artist_id: int):
+    """
+    Retorna um artista específico pelo seu ID.
+
+    Args:
+        artist_id (int): O ID do artista a ser retornado.
+
+    Returns:
+        dict: Os dados do artista.
+
+    Raises:
+        HTTPException: Se o artista não for encontrado.
+    """
+    response = (
+        supabase.table("users")
+        .select("*")
+        .eq("id", artist_id)
+        .eq("type", "artist")
+        .execute()
+    )
+    if not response.data:
+        raise HTTPException(status_code=404, detail="Artist not found")
+    return response.data[0]
+
 
 @router.post("/")
-def create_artist(artist: Artist):
-    new_artist = {"id": len(fake_db) + 1, "name": artist.name}
-    fake_db.artists.append(new_artist)
-    return new_artist
+def create_artist(artist: dict):
+    """
+    Cria um novo artista.
+
+    Args:
+        artist (dict): Os dados do artista a ser criado.
+
+    Returns:
+        dict: Os dados do artista criado.
+    """
+    artist["type"] = "artist"
+    response = supabase.table("users").insert(artist).execute()
+    return response.data[0]
+
 
 @router.put("/{artist_id}")
-def update_artist(artist_id: int, artist: Artist):
-    if artist_id > len(fake_db):
-        return {"error": "Artist not found"}
-    fake_db.artists[artist_id - 1] = {"id": artist_id, "name": artist.name}
-    return {"message": "Artist updated"}
+def update_artist(artist_id: int, artist: dict):
+    """
+    Atualiza um artista existente.
+
+    Args:
+        artist_id (int): O ID do artista a ser atualizado.
+        artist (dict): Os dados do artista para atualização.
+
+    Returns:
+        dict: Os dados do artista atualizado.
+
+    Raises:
+        HTTPException: Se o artista não for encontrado.
+    """
+    response = (
+        supabase.table("users")
+        .update(artist)
+        .eq("id", artist_id)
+        .eq("type", "artist")
+        .execute()
+    )
+    if not response.data:
+        raise HTTPException(status_code=404, detail="Artist not found")
+    return response.data[0]
+
 
 @router.delete("/{artist_id}")
 def delete_artist(artist_id: int):
-    if artist_id > len(fake_db):
-        return {"error": "Artist not found"}
-    del fake_db.artists[artist_id - 1]
-    return {"message": "Artist deleted"}
+    """
+    Deleta um artista existente pelo seu ID.
+
+    Args:
+        artist_id (int): O ID do artista a ser deletado.
+
+    Returns:
+        dict: Uma mensagem de sucesso.
+
+    Raises:
+        HTTPException: Se o artista não for encontrado.
+    """
+    response = (
+        supabase.table("users")
+        .delete()
+        .eq("id", artist_id)
+        .eq("type", "artist")
+        .execute()
+    )
+    if not response.data:
+        raise HTTPException(status_code=404, detail="Artist not found")
+    return {"message": "Artist deleted successfully"}
