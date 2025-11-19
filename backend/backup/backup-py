@@ -1,7 +1,12 @@
 import shutil
+import os
 
-shutil.make_archive(
-    base_name="backend_backup",
-    format='zip',
-    root_dir="C:/github/projetoDSTardeTurmaAB/backend"
-)
+diretorio = os.getcwd();
+diretorio += "\\backend\\"
+print(diretorio)
+
+# shutil.make_archive(
+#     base_name="backend_backup",
+#     format='zip',
+#     root_dir="C:/github/projetoDSTardeTurmaAB/backend"
+# )
