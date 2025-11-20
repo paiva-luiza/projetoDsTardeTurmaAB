@@ -46,19 +46,25 @@ const ProfileScreen = memo(() => {
   </TouchableOpacity>
 
   {/* FOTO DO PERFIL */}
-<Image
-  source={{ uri: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }}
-  style={{
-    width: rf(125),
-    height: rf(125),
-    borderRadius: rf(70),
-    marginTop: rf(40),
-    marginBottom: rf(12),
-    borderWidth: 4,
-    borderColor: '#ffffff',
-  }}
-  resizeMode="cover"
-/>
+<View style={{
+  width: "100%",
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: rf(40)
+}}>
+  <Image
+    source={{ uri: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }}
+    style={{
+      width: rf(125),
+      height: rf(125),
+      borderRadius: rf(70),
+      marginBottom: rf(12),
+      borderWidth: 4,
+      borderColor: '#ffffff',
+    }}
+  />
+</View>
+
 
 
 <View style={{ alignItems: 'center', gap: rf(6), marginBottom: rf(10) }}>
@@ -92,6 +98,32 @@ const ProfileScreen = memo(() => {
       </View>
     ))}
   </View>
+{/* ===== TAGS DE GÊNERO ===== */}
+<View style={styles.genreContainer}>
+  {["Rock", "Forró", "Metal industrial", "Glam Rock"].map((tag, i) => (
+    <TouchableOpacity key={i} style={styles.genreTag}>
+      <Text style={styles.genreText}>{tag}</Text>
+    </TouchableOpacity>
+  ))}
+</View>
+
+{/* ===== ARTISTAS MAIS OUVIDOS ===== */}
+<View style={styles.artistContainer}>
+  <Text style={styles.artistTitle}>Artistas mais ouvidos</Text>
+
+  {[
+    /*
+    { name: "Jackson do Pandeiro", img: require("../assets/jackson.png") },
+    { name: "Nirvana", img: require("../assets/nirvana.png") },
+    { name: "Marilyn Manson", img: require("../assets/manson.png") },
+     */
+  ].map((artist, i) => (
+    <View key={i} style={styles.artistCard}>
+      <Image source={artist.img} style={styles.artistImg} />
+      <Text style={styles.artistName}>{artist.name}</Text>
+    </View>
+  ))}
+</View>
 
   <TouchableOpacity
     activeOpacity={0.9}
@@ -186,6 +218,68 @@ const styles = StyleSheet.create({
     color: '#fff', 
     fontWeight: 'bold' 
   },
+  // ===== GÊNEROS =====
+genreContainer: {
+  flexDirection: "row",
+  flexWrap: "wrap",
+  justifyContent: "center",
+  marginTop: 20,
+  gap: 12,
+},
+
+genreTag: {
+  backgroundColor: "rgba(255,255,255,0.20)",
+  paddingVertical: 10,
+  paddingHorizontal: 18,
+  borderRadius: 20,
+  borderWidth: 1,
+  borderColor: "rgba(255,255,255,0.3)",
+},
+
+genreText: {
+  color: "#fff",
+  fontWeight: "600",
+  fontSize: 14,
+},
+
+// ===== ARTISTAS =====
+artistContainer: {
+  marginTop: 25,
+  width: "100%",
+  paddingHorizontal: 25,
+},
+
+artistTitle: {
+  fontSize: 18,
+  color: "#fff",
+  fontWeight: "700",
+  marginBottom: 12,
+},
+
+artistCard: {
+  flexDirection: "row",
+  alignItems: "center",
+  backgroundColor: "rgba(255,255,255,0.20)",
+  padding: 12,
+  borderRadius: 16,
+  marginBottom: 10,
+  borderWidth: 1,
+  borderColor: "rgba(255,255,255,0.25)",
+},
+
+artistImg: {
+  width: 45,
+  height: 45,
+  borderRadius: 50,
+  marginRight: 12,
+},
+
+artistName: {
+  fontSize: 15,
+  color: "#fff",
+  fontWeight: "600",
+},
+
 
   // ===== FOOTER =====
   footer: {
