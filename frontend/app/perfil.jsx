@@ -35,89 +35,81 @@ const ProfileScreen = memo(() => {
   return (
     <View style={styles.container}>
      
-    
-       <LinearGradient colors={['#8000d5', '#f910a3', '#fddf00']} style={styles.gradient}>
-        <Image
-          source={{ uri: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }}
-          style={{
-            width: rf(100),
-            height: rf(100),
-            borderRadius: rf(50),
-            marginBottom: rf(5),
-            borderWidth: 2,
-            borderColor: '#fff',
-          }}
-          resizeMode="cover"
-        />
+    <LinearGradient
+  colors={['#7F00D5', '#F910A2', '#FDDC00']}
+  start={{ x: 0.5, y: 0 }}
+  end={{ x: 0.5, y: 1 }}
+  style={styles.gradient}
+>
+  <TouchableOpacity style={styles.backCircle} onPress={() => navigation.goBack()}>
+    <AntDesign name="arrowleft" size={20} color="#fff" />
+  </TouchableOpacity>
 
-        <View style={{ alignItems: 'center', gap: rf(3) }}>
-          <Text style={[styles.username, { fontSize: rf(22 + (isSmallScreen ? -2 : 0)) }]}>Usuário</Text>
-          <Text style={[styles.email, { fontSize: rf(13) }]}>0 seguidores - 4 seguindo</Text>
-          <Text style={[styles.memberSince, { fontSize: rf(12) }]}>YRCAP     Naosouiphone</Text>
-          <Text style={[styles.location, { fontSize: rf(13) }]}>São Paulo, SP</Text>
-        </View>
-      
-      <TouchableOpacity style={styles.backCircle} onPress={() => navigation.goBack()}>
-                <AntDesign name="arrowleft" size={20} color="#fff" />
-              </TouchableOpacity>
+  <Image
+    source={{ uri: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }}
+    style={{
+      width: rf(105),
+      height: rf(105),
+      borderRadius: rf(60),
+      marginTop: rf(20),
+      borderWidth: 3,
+      borderColor: '#fff',
+    }}
+  />
 
-     
-      
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          marginTop: rf(35),
-          gap: rf(30),
-          flexWrap: 'wrap',
-          width: '100%',
-          paddingHorizontal: width * 0.1,
-        }}
-      >
-        {statsData.map((item, i) => (
-          <View key={i} style={{ alignItems: 'center', minWidth: rf(100) }}>
-            <Text style={[styles.statNumber, { fontSize: rf(26) }]}>{item.number}</Text>
-            <Text style={[styles.statLabel, { fontSize: rf(13) }]}>{item.label}</Text>
-          </View>
-        ))}
+  <View style={{ alignItems: 'center', marginTop: rf(10), gap: rf(4) }}>
+    <Text style={[styles.username, { fontSize: rf(22) }]}>Fulano D’ Town</Text>
+    <Text style={[styles.email, { fontSize: rf(14) }]}>23 seguidores • 4 seguindo</Text>
+    <Text style={[styles.memberSince, { fontSize: rf(13) }]}>@yrcapsiin   @naosouiphone</Text>
+  </View>
+
+  <View
+    style={{
+      flexDirection: 'row',
+      justifyContent: 'center',
+      marginTop: rf(35),
+      gap: rf(30),
+      flexWrap: 'wrap',
+      width: '100%',
+    }}
+  >
+    {statsData.map((item, i) => (
+      <View key={i} style={{ alignItems: 'center', minWidth: rf(100) }}>
+        <Text style={[styles.statNumber, { fontSize: rf(30) }]}>{item.number}</Text>
+        <Text style={[styles.statLabel, { fontSize: rf(14) }]}>{item.label}</Text>
       </View>
+    ))}
+  </View>
 
-     
-      <TouchableOpacity
-        activeOpacity={0.9}
-        style={[
-          styles.logoutButton,
-          {
-            backgroundColor: pressingLogout ? '#d99ac1' : '#F1A7D5',
-            transform: [{ scale: pressingLogout ? 0.97 : 1 }],
-            paddingVertical: rf(14),
-            marginTop: rf(55),
-            borderRadius: rf(14),
-            width: width * 0.7,
-            elevation: 3,
-          },
-        ]}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-      >
-        <Text style={[styles.logoutText, { fontSize: rf(17) }]}>Sair da Conta</Text>
+  <TouchableOpacity
+    activeOpacity={0.9}
+    style={[
+      styles.logoutButton,
+      {
+        backgroundColor: pressingLogout ? '#d99ac1' : '#F1A7D5',
+        transform: [{ scale: pressingLogout ? 0.97 : 1 }],
+        paddingVertical: rf(14),
+        marginTop: rf(50),
+        borderRadius: rf(16),
+        width: width * 0.7,
+      },
+    ]}
+    onPressIn={handlePressIn}
+    onPressOut={handlePressOut}
+  >
+    <Text style={[styles.logoutText, { fontSize: rf(17) }]}>Sair da Conta</Text>
+  </TouchableOpacity>
+
+  <View style={styles.footer}>
+    {['Player', 'Curtidas', 'Perfil'].map((label, i) => (
+      <TouchableOpacity key={i} style={styles.footerItem} activeOpacity={0.8}>
+        <Text style={styles.footerText}>{label}</Text>
       </TouchableOpacity>
-      
+    ))}
+  </View>
+</LinearGradient>
 
-  
-      <View style={styles.footer}>
-        {['Player', 'Curtidas', 'Perfil'].map((label, i) => (
-          <TouchableOpacity
-            key={i}
-            style={styles.footerItem}
-            activeOpacity={0.8}
-          >
-            <Text style={styles.footerText}>{label}</Text>
-          </TouchableOpacity>
-        ))}
-         
-      </View>
-      </LinearGradient>
+      
     </View>
    
   );
