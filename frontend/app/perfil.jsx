@@ -128,20 +128,16 @@ const ProfileScreen = memo(() => {
 });
 
 ProfileScreen.displayName = 'ProfileScreen';
-
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#ffd3e8', alignItems: 'center' },
-  header: {
-    width: '80%',
-    height: '80%',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
+  // ===== CONTAINER PRINCIPAL =====
+  container: { 
+    flex: 1, 
+    backgroundColor: '#ffd3e8', 
+    alignItems: 'center' 
   },
-    backCircle: {
+
+  // ===== BOTÃO DE VOLTAR =====
+  backCircle: {
     width: 40,
     height: 40,
     borderRadius: 20,
@@ -151,19 +147,47 @@ const styles = StyleSheet.create({
     marginTop: 12,
     marginLeft: -2,
   },
+
+  // ===== TEXTOS DO PERFIL (AJUSTADOS AO FIGMA) =====
   username: { 
     fontWeight: 'bold',
-     color: '#441b34' 
-    },
-  email: { color: '#380d26' },
-  memberSince: { color: '#2c2c2c' },
-  location: { color: '#6b4b63' },
-  statNumber: { fontWeight: 'bold', color: '#F1A7D5' },
-  statLabel: { color: '#D9A6C4', textAlign: 'center' },
-  logoutButton: { alignItems: 'center' },
-  logoutText: { color: '#fff', fontWeight: 'bold' },
-  
-  
+    color: '#ffffff',
+  },
+
+  email: { 
+    color: 'rgba(255,255,255,0.85)' 
+  },
+
+  memberSince: { 
+    color: 'rgba(255,255,255,0.75)' 
+  },
+
+  location: { 
+    color: 'rgba(255,255,255,0.75)' 
+  },
+
+  // ===== ESTATÍSTICAS =====
+  statNumber: { 
+    fontWeight: 'bold', 
+    color: '#ffffff' 
+  },
+
+  statLabel: { 
+    color: 'rgba(255,255,255,0.6)', 
+    textAlign: 'center' 
+  },
+
+  // ===== BOTÃO LOGOUT =====
+  logoutButton: { 
+    alignItems: 'center' 
+  },
+
+  logoutText: { 
+    color: '#fff', 
+    fontWeight: 'bold' 
+  },
+
+  // ===== FOOTER =====
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -173,8 +197,17 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: '#e5c7da',
   },
-  footerItem: { padding: 10 },
-  footerText: { fontSize: 14, fontWeight: 'bold', color: '#441b34' },
+
+  footerItem: { 
+    padding: 10 
+  },
+
+  footerText: { 
+    fontSize: 14, 
+    fontWeight: 'bold', 
+    color: '#441b34' 
+  },
 });
+
 
 export default ProfileScreen;
