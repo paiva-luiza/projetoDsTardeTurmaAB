@@ -45,23 +45,35 @@ const ProfileScreen = memo(() => {
     <AntDesign name="arrowleft" size={20} color="#fff" />
   </TouchableOpacity>
 
-  <Image
-    source={{ uri: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }}
-    style={{
-      width: rf(105),
-      height: rf(105),
-      borderRadius: rf(60),
-      marginTop: rf(20),
-      borderWidth: 3,
-      borderColor: '#fff',
-    }}
-  />
+  {/* FOTO DO PERFIL */}
+<Image
+  source={{ uri: 'https://cdn-icons-png.flaticon.com/512/149/149071.png' }}
+  style={{
+    width: rf(125),
+    height: rf(125),
+    borderRadius: rf(70),
+    marginTop: rf(40),
+    marginBottom: rf(12),
+    borderWidth: 4,
+    borderColor: '#ffffff',
+  }}
+  resizeMode="cover"
+/>
 
-  <View style={{ alignItems: 'center', marginTop: rf(10), gap: rf(4) }}>
-    <Text style={[styles.username, { fontSize: rf(22) }]}>Fulano D’ Town</Text>
-    <Text style={[styles.email, { fontSize: rf(14) }]}>23 seguidores • 4 seguindo</Text>
-    <Text style={[styles.memberSince, { fontSize: rf(13) }]}>@yrcapsiin   @naosouiphone</Text>
-  </View>
+
+<View style={{ alignItems: 'center', gap: rf(6), marginBottom: rf(10) }}>
+  <Text style={[styles.username, { fontSize: rf(26), letterSpacing: 0.3 }]}>
+    Fulano D’ Town
+  </Text>
+
+  <Text style={[styles.email, { fontSize: rf(15), opacity: 0.8 }]}>
+    23 seguidores • 4 seguindo
+  </Text>
+
+  <Text style={[styles.memberSince, { fontSize: rf(14), color: 'rgba(255,255,255,0.80)' }]}>
+    @yrcap     @naosouiphone
+  </Text>
+</View>
 
   <View
     style={{
