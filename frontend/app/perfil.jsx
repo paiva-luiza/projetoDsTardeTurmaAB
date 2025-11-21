@@ -80,6 +80,12 @@ const ProfileScreen = memo(() => {
     @yrcap     @naosouiphone
   </Text>
 </View>
+<View style={styles.descriptionContainer}>
+  <Text style={styles.descriptionText}>
+    eeeer amo ouçar musga
+amo tumati tamem 
+  </Text>
+</View>
 
   <View
     style={{
@@ -197,6 +203,33 @@ const styles = StyleSheet.create({
   location: { 
     color: 'rgba(255,255,255,0.75)' 
   },
+descriptionContainer: {
+  width: '70%',
+  height: '15%',
+backgroundColor: 'rgba(29, 20, 54, 0.65)', // mais clara
+  padding: 18,
+  borderRadius: 18,
+  alignItems: 'center',
+  justifyContent: 'center',
+
+  // CENTRALIZA NO MEIO DA TELA
+  alignSelf: 'center',
+  marginTop: 20,
+
+  // Sombras estilo Figma
+  shadowColor: '#000',
+  shadowOpacity: 0.12,
+  shadowRadius: 6,
+  elevation: 3,
+},
+
+descriptionText: {
+  fontSize: 25,
+  color: '#ffffffff',
+  textAlign: 'center',
+  fontWeight: '500',
+
+},
 
   // ===== ESTATÍSTICAS =====
   statNumber: { 
