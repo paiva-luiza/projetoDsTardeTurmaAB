@@ -18,7 +18,7 @@ const ProfileScreen = memo(() => {
   const [pressingLogout, setPressingLogout] = useState(false);
   const navigation = useNavigation();
 
-  // responsive function (rf) como você já tinha
+
   const rf = useMemo(
     () => (size) =>
       Math.round(Math.max(size * 0.9, Math.min(size * 1.6, size * (width / 390)))),
@@ -28,18 +28,14 @@ const ProfileScreen = memo(() => {
   const isSmallScreen = width < 360;
 
   const statsData = useMemo(
-    () => [
-      { number: 0, label: 'Músicas Curtidas' },
-      { number: 0, label: 'Artistas Descobertos' },
-      { number: 0, label: 'Playlists Criadas' },
-    ],
+    () => 
     []
   );
 
   const handlePressIn = useCallback(() => setPressingLogout(true), []);
   const handlePressOut = useCallback(() => setPressingLogout(false), []);
 
-  // imagens locais que você enviou (arquivo 2808 é o print do figma; usados dois para artistas)
+ 
   const artistImages = [
     { name: 'Jackson do Pandeiro', uri: 'file:///mnt/data/af0b8202fb3538ef8eb954eeb5887240ed21766d.png' },
     { name: 'Nirvana', uri: 'file:///mnt/data/af0b8202fb3538ef8eb954eeb5887240ed21766d.png' },
@@ -145,35 +141,19 @@ const ProfileScreen = memo(() => {
             activeOpacity={0.9}
             style={[
               styles.logoutButton,
-              {
-                backgroundColor: pressingLogout ? '#d99ac1' : '#F1A7D5',
-                transform: [{ scale: pressingLogout ? 0.97 : 1 }],
-                paddingVertical: rf(14),
-                marginTop: rf(24),
-                borderRadius: rf(16),
-                width: width * 0.7,
-              },
+              
             ]}
             onPressIn={handlePressIn}
             onPressOut={handlePressOut}
           >
-            <Text style={[styles.logoutText, { fontSize: rf(17) }]}>Sair da Conta</Text>
+   
           </TouchableOpacity>
 
         </ScrollView>
 
         {/* FOOTER com ícones/texto (fixo embaixo) */}
-        <View style={styles.footer}>
-          <TouchableOpacity style={styles.footerItem} activeOpacity={0.8}>
-            <Text style={styles.footerText}>Player</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerItem} activeOpacity={0.8}>
-            <Text style={styles.footerText}>Curtidas</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.footerItem} activeOpacity={0.8}>
-            <Text style={styles.footerText}>Perfil</Text>
-          </TouchableOpacity>
-        </View>
+      
+     
       </LinearGradient>
     </SafeAreaView>
   );
@@ -245,28 +225,28 @@ const styles = StyleSheet.create({
   logoutText: { color: '#fff', fontWeight: 'bold' },
 
   // Gêneros
-  genreContainer: {
-    width: '92%',
-    alignSelf: 'center',
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    marginTop: 12,
-  },
-  genreTag: {
-    backgroundColor: "rgba(255,255,255,0.20)",
-    paddingVertical: 10,
-    paddingHorizontal: 18,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "rgba(255,255,255,0.3)",
-    margin: 6,
-  },
-  genreText: {
-    color: "#fff",
-    fontWeight: "600",
-    fontSize: 14,
-  },
+genreContainer: {
+  flexDirection: "row",
+  flexWrap: "wrap",
+  justifyContent: "center",
+  gap: 10, // espaçamento entre tags
+},
+
+genreTag: {
+  paddingVertical: 8,
+  paddingHorizontal: 16,
+  backgroundColor: "rgba(255, 255, 255, 0.18)", // igual ao fundo do botão do Figma
+  borderRadius: 20,
+  borderWidth: 1,
+  borderColor: "rgba(255,255,255,0.25)",
+},
+
+genreText: {
+  color: "#ffffff",
+  fontSize: 13,
+  fontWeight: "600",
+},
+
 
   // Artistas
   artistContainer: {
@@ -303,18 +283,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  // FOOTER
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingVertical: 12,
-    backgroundColor: '#f7e6f0',
-    width: '100%',
-    borderTopWidth: 1,
-    borderTopColor: '#e5c7da',
-  },
-  footerItem: { padding: 10 },
-  footerText: { fontSize: 14, fontWeight: '700', color: '#441b34' },
+
+ 
 });
 
 export default ProfileScreen;
+
