@@ -24,6 +24,7 @@
     "better-sqlite3": "^12.4.6",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
     "mongoose": "^8.19.2",
     "pino": "^10.1.0",
     "pino-http": "^11.0.0",

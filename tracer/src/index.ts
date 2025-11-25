@@ -27,6 +27,9 @@ app.use(requestLoggerMiddleware)
 // Middleware para extrair informações do cliente (IP e User-Agent)
 app.use(clientInfoMiddleware)
 
+// Rate limiting global (opcional - pode ser aplicado apenas em rotas específicas)
+// app.use(generalRateLimiter)
+
 // Middleware para parsing JSON
 app.use(express.json())
 

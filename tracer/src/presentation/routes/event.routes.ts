@@ -3,9 +3,13 @@ import { EventController } from '../controllers/event.controller';
 import { authMiddleware } from '../../infra/middleware/auth.middleware';
 import { validateCreateEvent } from '../../infra/middleware/validation.middleware';
 import { clientInfoMiddleware } from '../../infra/middleware/client-info.middleware';
+import { generalRateLimiter, createEventRateLimiter } from '../../infra/middleware/rate-limit.middleware';
 
 export function createEventRoutes(eventController: EventController): Router {
   const router = Router();
+
+  // Aplica rate limiting geral em todas as rotas
+  router.use(generalRateLimiter);
 
   // Todas as rotas requerem autenticação
   router.use(authMiddleware);
@@ -13,9 +17,10 @@ export function createEventRoutes(eventController: EventController): Router {
   // Middleware de informações do cliente (já aplicado globalmente, mas mantido aqui para clareza)
   router.use(clientInfoMiddleware);
 
-  // POST /api/events - Criar novo evento
+  // POST /api/events - Criar novo evento (com rate limiting específico)
   router.post(
     '/',
+    createEventRateLimiter,
     validateCreateEvent,
     (req, res, next) => {
       try {
