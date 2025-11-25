@@ -1,3 +1,4 @@
+import express from 'express'
 import { ENVIRONMENT } from "./environment/env"
 import express from 'express'
 import { SqliteDatabase } from './infra/persistence/sqlite/database'
