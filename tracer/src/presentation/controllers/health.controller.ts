@@ -5,7 +5,17 @@ export class HealthController {
   constructor(private database: SqliteDatabase) {}
 
   check(req: Request, res: Response): void {
-    const health = {
+    const health: {
+      status: string;
+      timestamp: string;
+      uptime: number;
+      database: {
+        connected: boolean;
+        status: string;
+        error?: string;
+      };
+      environment: string;
+    } = {
       status: 'ok',
       timestamp: new Date().toISOString(),
       uptime: process.uptime(),
