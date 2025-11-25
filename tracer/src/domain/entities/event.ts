@@ -1,3 +1,5 @@
+import { logger } from '../../infra/logger/pino';
+
 export class Event {
   private constructor(
     public readonly id: number,
@@ -69,8 +71,8 @@ export class Event {
     if (data.metadata) {
       try {
         parsedMetadata = JSON.parse(data.metadata);
-      } catch (error) {
-        console.warn('Failed to parse metadata JSON:', error);
+      } catch (error: any) {
+        logger.warn({ error }, 'Failed to parse metadata JSON');
         parsedMetadata = null;
       }
     }

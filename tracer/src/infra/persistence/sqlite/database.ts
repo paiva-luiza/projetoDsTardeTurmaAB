@@ -32,7 +32,7 @@ export class SqliteDatabase {
       
       createEventsTable(this.db);
       
-      console.log(`✅ SQLite database connected: ${this.connectionString}`);
+      logger.info({ databasePath: this.connectionString }, '✅ SQLite database connected');
       
       return this.db;
     } catch (error: any) {
