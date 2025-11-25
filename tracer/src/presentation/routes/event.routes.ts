@@ -2,12 +2,16 @@ import { Router } from 'express';
 import { EventController } from '../controllers/event.controller';
 import { authMiddleware } from '../../infra/middleware/auth.middleware';
 import { validateCreateEvent } from '../../infra/middleware/validation.middleware';
+import { clientInfoMiddleware } from '../../infra/middleware/client-info.middleware';
 
 export function createEventRoutes(eventController: EventController): Router {
   const router = Router();
 
   // Todas as rotas requerem autenticação
   router.use(authMiddleware);
+  
+  // Middleware de informações do cliente (já aplicado globalmente, mas mantido aqui para clareza)
+  router.use(clientInfoMiddleware);
 
   // POST /api/events - Criar novo evento
   router.post(
