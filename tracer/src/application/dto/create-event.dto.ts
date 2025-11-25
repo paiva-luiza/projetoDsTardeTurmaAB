@@ -1,3 +1,11 @@
+import { 
+  isValidISO8601, 
+  validateMetadataSize, 
+  isValidJSONObject, 
+  validateObjectDepth,
+  validateTimestampRange 
+} from '../../infra/utils/validation.utils';
+
 export interface CreateEventDTO {
   event: string; // event_type
   source?: string;
@@ -14,6 +22,7 @@ export function validateCreateEventDTO(dto: any): { isValid: boolean; errors: st
     return { isValid: false, errors };
   }
 
+  // Validação do campo 'event'
   if (!dto.event || typeof dto.event !== 'string' || dto.event.trim().length === 0) {
     errors.push('Field "event" is required and must be a non-empty string');
   }
@@ -22,34 +31,64 @@ export function validateCreateEventDTO(dto: any): { isValid: boolean; errors: st
     errors.push('Field "event" must not exceed 255 characters');
   }
 
-  if (dto.source !== undefined && typeof dto.source !== 'string') {
-    errors.push('Field "source" must be a string');
+  // Validação do campo 'source'
+  if (dto.source !== undefined) {
+    if (typeof dto.source !== 'string') {
+      errors.push('Field "source" must be a string');
+    } else if (dto.source.length > 255) {
+      errors.push('Field "source" must not exceed 255 characters');
+    } else if (dto.source.trim().length === 0) {
+      errors.push('Field "source" cannot be an empty string');
+    }
   }
 
-  if (dto.source && dto.source.length > 255) {
-    errors.push('Field "source" must not exceed 255 characters');
+  // Validação avançada do campo 'metadata'
+  if (dto.metadata !== undefined) {
+    if (dto.metadata === null) {
+      // null é permitido
+    } else if (typeof dto.metadata !== 'object' || Array.isArray(dto.metadata)) {
+      errors.push('Field "metadata" must be an object (not an array)');
+    } else {
+      // Valida se é um JSON válido
+      if (!isValidJSONObject(dto.metadata)) {
+        errors.push('Field "metadata" must be a valid JSON object');
+      }
+
+      // Valida profundidade do objeto
+      if (!validateObjectDepth(dto.metadata, 10)) {
+        errors.push('Field "metadata" exceeds maximum nesting depth (10 levels)');
+      }
+
+      // Valida tamanho do metadata
+      const sizeValidation = validateMetadataSize(dto.metadata);
+      if (!sizeValidation.isValid) {
+        errors.push(`Field "metadata" exceeds maximum size (${sizeValidation.size}/${sizeValidation.maxSize} characters)`);
+      }
+    }
   }
 
-  if (dto.metadata !== undefined && typeof dto.metadata !== 'object') {
-    errors.push('Field "metadata" must be an object');
+  // Validação do campo 'userId'
+  if (dto.userId !== undefined) {
+    if (typeof dto.userId !== 'string') {
+      errors.push('Field "userId" must be a string');
+    } else if (dto.userId.length > 255) {
+      errors.push('Field "userId" must not exceed 255 characters');
+    } else if (dto.userId.trim().length === 0) {
+      errors.push('Field "userId" cannot be an empty string');
+    }
   }
 
-  if (dto.userId !== undefined && typeof dto.userId !== 'string') {
-    errors.push('Field "userId" must be a string');
-  }
-
-  if (dto.userId && dto.userId.length > 255) {
-    errors.push('Field "userId" must not exceed 255 characters');
-  }
-
-  if (dto.timestamp !== undefined && typeof dto.timestamp !== 'string') {
-    errors.push('Field "timestamp" must be a string');
-  }
-
-  if (dto.timestamp) {
-    const date = new Date(dto.timestamp);
-    if (isNaN(date.getTime())) {
-      errors.push('Field "timestamp" must be a valid ISO 8601 date string');
+  // Validação avançada do campo 'timestamp'
+  if (dto.timestamp !== undefined) {
+    if (typeof dto.timestamp !== 'string') {
+      errors.push('Field "timestamp" must be a string');
+    } else if (!isValidISO8601(dto.timestamp)) {
+      errors.push('Field "timestamp" must be a valid ISO 8601 date string (e.g., 2024-01-15T10:30:00Z)');
+    } else {
+      // Valida se o timestamp está em um range razoável
+      if (!validateTimestampRange(dto.timestamp, 365, 1)) {
+        errors.push('Field "timestamp" is outside acceptable range (max 365 days in the past, 1 day in the future)');
+      }
     }
   }
 

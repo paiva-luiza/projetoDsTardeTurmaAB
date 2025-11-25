@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { logger } from '../logger/pino';
 
 export class AppError extends Error {
   constructor(
@@ -23,13 +24,37 @@ export function errorHandlerMiddleware(
     return next(err);
   }
 
-  // Log do erro
-  console.error('Error:', {
-    message: err.message,
-    stack: err.stack,
-    url: req.url,
-    method: req.method
-  });
+  // Log do erro usando Pino
+  if (err instanceof AppError) {
+    if (err.statusCode >= 500) {
+      logger.error({
+        err,
+        req: {
+          method: req.method,
+          url: req.url,
+          ip: req.ip
+        }
+      }, err.message);
+    } else {
+      logger.warn({
+        err,
+        req: {
+          method: req.method,
+          url: req.url,
+          ip: req.ip
+        }
+      }, err.message);
+    }
+  } else {
+    logger.error({
+      err,
+      req: {
+        method: req.method,
+        url: req.url,
+        ip: req.ip
+      }
+    }, 'Unhandled error');
+  }
 
   // Se for um AppError (erro operacional conhecido)
   if (err instanceof AppError) {
