@@ -24,7 +24,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction):
 
   const apiKey = parts[1];
 
-  if (!ENVIRONMENT.API_KEY) {
+  if (!ENVIRONMENT.API_KEY || ENVIRONMENT.API_KEY.trim().length === 0) {
     res.status(500).json({
       error: 'Server Configuration Error',
       message: 'API_KEY is not configured on the server'
