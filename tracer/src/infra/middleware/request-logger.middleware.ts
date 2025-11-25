@@ -1,0 +1,35 @@
+import { Request, Response, NextFunction } from 'express';
+import pinoHttp from 'pino-http';
+import { logger } from '../logger/pino';
+
+export const requestLoggerMiddleware = pinoHttp({
+  logger,
+  customLogLevel: (req: Request, res: Response, err?: Error) => {
+    if (res.statusCode >= 400 && res.statusCode < 500) {
+      return 'warn';
+    } else if (res.statusCode >= 500 || err) {
+      return 'error';
+    }
+    return 'info';
+  },
+  customSuccessMessage: (req: Request, res: Response) => {
+    return `${req.method} ${req.url} - ${res.statusCode}`;
+  },
+  customErrorMessage: (req: Request, res: Response, err: Error) => {
+    return `${req.method} ${req.url} - ${res.statusCode} - ${err.message}`;
+  },
+  serializers: {
+    req: (req: Request) => ({
+      method: req.method,
+      url: req.url,
+      path: req.path,
+      query: req.query,
+      ip: req.ip,
+      userAgent: req.headers['user-agent']
+    }),
+    res: (res: Response) => ({
+      statusCode: res.statusCode
+    })
+  }
+});
+

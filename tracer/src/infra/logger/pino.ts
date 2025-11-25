@@ -1,14 +1,27 @@
 import pino from 'pino';
+import { ENVIRONMENT } from '../../environment/env';
 
-const logger = pino({
-  level: process.env.LOG_LEVEL || 'info',
-  transport: {
-    target: 'pino-pretty',
-    options: {
-      colorize: true,
-    },
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
+export const logger = pino({
+  level: process.env.LOG_LEVEL || (isDevelopment ? 'debug' : 'info'),
+  transport: isDevelopment
+    ? {
+        target: 'pino-pretty',
+        options: {
+          colorize: true,
+          translateTime: 'SYS:standard',
+          ignore: 'pid,hostname'
+        }
+      }
+    : undefined,
+  formatters: {
+    level: (label) => {
+      return { level: label.toUpperCase() };
+    }
   },
+  timestamp: pino.stdTimeFunctions.isoTime
 });
 
-export { logger };
+export default logger;
 
