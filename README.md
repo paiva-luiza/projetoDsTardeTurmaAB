@@ -1,3 +1,8 @@
+# Auto-avaliação:
+(https://docs.google.com/forms/d/e/1FAIpQLSdq8WTgo9QAmbRjRLHoOIysiGwSFNF3bL4BU9Micqs964mS_Q/viewform?usp=publish-editor)[https://docs.google.com/forms/d/e/1FAIpQLSdq8WTgo9QAmbRjRLHoOIysiGwSFNF3bL4BU9Micqs964mS_Q/viewform?usp=publish-editor]
+
+
+
 # 🎨🎶 SingerSwipe – Descubra novos artistas de forma divertida
 
 ## 📌 Introdução
