@@ -1,4 +1,5 @@
 import Database from 'better-sqlite3';
+import { logger } from '../../logger/pino';
 
 export function createEventsTable(db: Database.Database): void {
   const createTableQuery = `
@@ -24,9 +25,9 @@ export function createEventsTable(db: Database.Database): void {
   try {
     db.exec(createTableQuery);
     db.exec(createIndexQuery);
-    console.log('✅ Events table created successfully');
-  } catch (error) {
-    console.error('❌ Error creating events table:', error);
+    logger.info('✅ Events table created successfully');
+  } catch (error: any) {
+    logger.error({ error }, '❌ Error creating events table');
     throw error;
   }
 }

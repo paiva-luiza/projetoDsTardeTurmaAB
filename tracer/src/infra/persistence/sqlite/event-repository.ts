@@ -1,5 +1,6 @@
 import Database from 'better-sqlite3';
 import { SqliteDatabase } from './database';
+import { logger } from '../../logger/pino';
 
 export interface EventData {
   event_type: string;
@@ -51,9 +52,11 @@ export class EventRepository {
         timestamp
       );
 
-      return this.findById(result.lastInsertRowid as number);
-    } catch (error) {
-      console.error('❌ Error creating event:', error);
+      const createdEvent = this.findById(result.lastInsertRowid as number);
+      logger.debug({ eventId: createdEvent.id, eventType: createdEvent.event_type }, 'Event created');
+      return createdEvent;
+    } catch (error: any) {
+      logger.error({ error, eventData }, '❌ Error creating event');
       throw error;
     }
   }

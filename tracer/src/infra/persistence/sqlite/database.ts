@@ -3,6 +3,7 @@ import { ENVIRONMENT } from '../../../environment/env';
 import { createEventsTable } from './schema';
 import { dirname } from 'path';
 import { existsSync, mkdirSync } from 'fs';
+import { logger } from '../../logger/pino';
 
 export class SqliteDatabase {
   private db: Database.Database | null = null;
@@ -34,8 +35,8 @@ export class SqliteDatabase {
       console.log(`✅ SQLite database connected: ${this.connectionString}`);
       
       return this.db;
-    } catch (error) {
-      console.error('❌ Error connecting to SQLite database:', error);
+    } catch (error: any) {
+      logger.error({ error, databasePath: this.connectionString }, '❌ Error connecting to SQLite database');
       throw error;
     }
   }
@@ -51,7 +52,7 @@ export class SqliteDatabase {
     if (this.db) {
       this.db.close();
       this.db = null;
-      console.log('🔌 SQLite database disconnected');
+      logger.info('🔌 SQLite database disconnected');
     }
   }
 

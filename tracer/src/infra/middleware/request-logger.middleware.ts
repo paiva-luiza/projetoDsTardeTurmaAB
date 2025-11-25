@@ -4,7 +4,7 @@ import { logger } from '../logger/pino';
 
 export const requestLoggerMiddleware = pinoHttp({
   logger,
-  customLogLevel: (req: Request, res: Response, err: Error) => {
+  customLogLevel: (req: Request, res: Response, err?: Error) => {
     if (res.statusCode >= 400 && res.statusCode < 500) {
       return 'warn';
     } else if (res.statusCode >= 500 || err) {
