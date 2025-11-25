@@ -30,7 +30,7 @@ export class EventRepository {
     this.db = database.getDatabase();
   }
 
-  async create(eventData: EventData): Promise<Event> {
+  create(eventData: EventData): Event {
     const insertQuery = `
       INSERT INTO events (event_type, source, metadata, user_id, ip_address, user_agent, timestamp)
       VALUES (?, ?, ?, ?, ?, ?, ?)
