@@ -6,6 +6,7 @@ import { GetEventsByTypeUseCase } from '../../application/use-cases/get-events-b
 import { GetEventsByUserIdUseCase } from '../../application/use-cases/get-events-by-user-id.use-case';
 import { EventResponseDTO, EventListResponseDTO } from '../../application/dto/event-response.dto';
 import { AppError } from '../../infra/middleware/error-handler.middleware';
+import { ClientInfo } from '../../infra/middleware/client-info.middleware';
 
 export class EventController {
   constructor(
@@ -18,8 +19,10 @@ export class EventController {
 
   create(req: Request, res: Response): void {
     try {
-      const ipAddress = req.ip || req.headers['x-forwarded-for'] as string || req.socket.remoteAddress || undefined;
-      const userAgent = req.headers['user-agent'] || undefined;
+      // Usa informações do cliente extraídas pelo middleware
+      const clientInfo = (req as any).clientInfo as ClientInfo | undefined;
+      const ipAddress = clientInfo?.ipAddress || undefined;
+      const userAgent = clientInfo?.userAgent || undefined;
 
       const event = this.createEventUseCase.execute(req.body, ipAddress, userAgent);
       
