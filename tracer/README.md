@@ -16,7 +16,9 @@ O **Tracer** é uma aplicação de monitoramento desenvolvida para capturar, arm
 - **Node.js** (v22.14.0) - Runtime JavaScript
 - **TypeScript** - Linguagem de programação com tipagem estática
 - **Express** - Framework web para criação da API REST
-- **SQLite** - Banco de dados relacional embutido para persistência de eventos
+- **SQLite** (better-sqlite3) - Banco de dados relacional embutido para persistência de eventos
+- **Pino** - Sistema de logging estruturado e performático
+- **express-rate-limit** - Rate limiting para prevenir abuso da API
 - **dotenv** - Gerenciamento de variáveis de ambiente
 
 ## 📦 Instalação
@@ -82,6 +84,34 @@ O projeto segue os princípios de **Clean Architecture** e **Domain Driven Desig
 
 O sistema expõe rotas REST para receber eventos de monitoramento. As rotas permitem que aplicações clientes enviem eventos que serão armazenados no SQLite.
 
+### Autenticação
+
+Todas as rotas da API (exceto `/health`) requerem autenticação via Bearer Token:
+
+```
+Authorization: Bearer {API_KEY}
+```
+
+### Rotas Disponíveis
+
+- `GET /health` - Health check do sistema (não requer autenticação)
+- `POST /api/events` - Criar novo evento
+- `GET /api/events` - Listar eventos (com paginação)
+- `GET /api/events/:id` - Buscar evento por ID
+- `GET /api/events/type/:type` - Buscar eventos por tipo
+- `GET /api/events/user/:userId` - Buscar eventos por user ID
+
+### Rate Limiting
+
+O sistema implementa rate limiting para prevenir abuso:
+- **Rotas gerais:** 100 requisições por 15 minutos por IP
+- **Criação de eventos:** 30 requisições por minuto por IP
+- **Health check:** 60 requisições por minuto por IP
+
+### Documentação Completa
+
+Para documentação detalhada da API, consulte [API_DOCUMENTATION.md](./API_DOCUMENTATION.md)
+
 ### Exemplo de Uso
 
 ```bash
@@ -91,11 +121,13 @@ Authorization: Bearer {API_KEY}
 
 {
   "event": "user_login",
+  "source": "web-app",
   "timestamp": "2024-01-15T10:30:00Z",
   "metadata": {
     "userId": "123",
-    "ip": "192.168.1.1"
-  }
+    "action": "login"
+  },
+  "userId": "user-123"
 }
 ```
 
@@ -104,11 +136,23 @@ Authorization: Bearer {API_KEY}
 ```
 tracer/
 ├── src/
-│   ├── environment/     # Configurações de ambiente
-│   ├── infra/           # Camada de infraestrutura
-│   │   ├── logger/      # Configuração de logging
-│   │   └── persistence/ # Configuração do banco de dados
-│   └── index.ts         # Ponto de entrada da aplicação
+│   ├── domain/              # Camada de domínio (entidades)
+│   │   └── entities/
+│   ├── application/        # Camada de aplicação (casos de uso, DTOs)
+│   │   ├── dto/
+│   │   └── use-cases/
+│   ├── presentation/       # Camada de apresentação (controllers, rotas)
+│   │   ├── controllers/
+│   │   └── routes/
+│   ├── infra/              # Camada de infraestrutura
+│   │   ├── logger/         # Configuração de logging (Pino)
+│   │   ├── middleware/     # Middlewares (auth, validation, rate limit, etc.)
+│   │   ├── persistence/    # Configuração do banco de dados
+│   │   └── utils/          # Utilitários
+│   ├── environment/        # Configurações de ambiente
+│   └── index.ts            # Ponto de entrada da aplicação
+├── API_DOCUMENTATION.md    # Documentação completa da API
+├── PLANO.md                # Plano de implementação
 ├── package.json
 ├── tsconfig.json
 └── README.md
